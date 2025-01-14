@@ -25,7 +25,6 @@ ont-size: 0.7rem;
     background: var(--bg);
     border: solid 2px transparent;
     border-radius: 3.5rem;
-    color: var(--tertialry);
     text-align: center;
     margin: auto 0.6rem;
 	&:focus {
@@ -46,7 +45,7 @@ export default function GotoInput(props: GotoInputProps) {
 
 	const inputFocus = useCallback(() => {
 		inputRef.current?.select();
-	} , []);
+	}, []);
 
 	const onPageNoInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value.length <= 0) return;
@@ -57,7 +56,7 @@ export default function GotoInput(props: GotoInputProps) {
 
 	useEffect(() => {
 		inputRef.current.value = props.currentPage.toString();
-	} , [props.currentPage]);
+	}, [props.currentPage]);
 
 	return (<Group size={props.size || 1}>
 		<FontAwesomeIcon icon={faAngleLeft} title="Previous Page" style={{ cursor: 'pointer' }} onClick={() => props.onChange(props.currentPage - 1)} />

@@ -18,7 +18,7 @@ router.get('admin/user_deletions', async (_path: SubPath, ctx: AppContext) => {
 	const user = ctx.joplin.owner;
 	if (!user.is_admin) throw new ErrorForbidden();
 
-	const pagination = makeTablePagination(ctx.query, 'scheduled_time', PaginationOrderDir.ASC);
+	const pagination = makeTablePagination(ctx.query, 'scheduled_time', PaginationOrderDir.DESC);
 	const page = await ctx.joplin.models.userDeletion().allPaginated(pagination);
 	const users = await ctx.joplin.models.user().loadByIds(page.items.map(d => d.user_id), { fields: ['id', 'email'] });
 
@@ -71,38 +71,40 @@ router.get('admin/user_deletions', async (_path: SubPath, ctx: AppContext) => {
 		rows: page.items.map(d => {
 			const isDone = d.end_time && d.success;
 
-			const row: Row = [
-				{
-					value: `checkbox_${d.id}`,
-					checkbox: true,
-				},
-				{
-					value: isDone ? d.user_id : users.find(u => u.id === d.user_id).email,
-					stretch: true,
-					url: isDone ? '' : userUrl(d.user_id),
-				},
-				{
-					value: yesOrNo(d.process_data),
-				},
-				{
-					value: yesOrNo(d.process_account),
-				},
-				{
-					value: formatDateTime(d.scheduled_time),
-				},
-				{
-					value: formatDateTime(d.start_time),
-				},
-				{
-					value: formatDateTime(d.end_time),
-				},
-				{
-					value: d.end_time ? yesOrNo(d.success) : '-',
-				},
-				{
-					value: d.error,
-				},
-			];
+			const row: Row = {
+				items: [
+					{
+						value: `checkbox_${d.id}`,
+						checkbox: true,
+					},
+					{
+						value: isDone ? d.user_id : users.find(u => u.id === d.user_id).email,
+						stretch: true,
+						url: isDone ? '' : userUrl(d.user_id),
+					},
+					{
+						value: yesOrNo(d.process_data),
+					},
+					{
+						value: yesOrNo(d.process_account),
+					},
+					{
+						value: formatDateTime(d.scheduled_time),
+					},
+					{
+						value: formatDateTime(d.start_time),
+					},
+					{
+						value: formatDateTime(d.end_time),
+					},
+					{
+						value: d.end_time ? yesOrNo(d.success) : '-',
+					},
+					{
+						value: d.error,
+					},
+				],
+			};
 
 			return row;
 		}),

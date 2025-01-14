@@ -1,10 +1,8 @@
 const ArrayUtils = require('./ArrayUtils');
 
-describe('ArrayUtils', function() {
+describe('ArrayUtils', () => {
 
-	beforeEach(async (done) => {
-		done();
-	});
+
 
 	it('should remove array elements', (async () => {
 		let a = ['un', 'deux', 'trois'];
@@ -74,6 +72,7 @@ describe('ArrayUtils', function() {
 			],
 		];
 
+		// eslint-disable-next-line github/array-foreach -- Old code before rule was applied
 		testCases.forEach((t, i) => {
 			const intervals = t[0];
 			const expected = t[1];

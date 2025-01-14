@@ -107,8 +107,8 @@ export default function VerticalPages(props: VerticalPagesProps) {
 					onTextSelect={props.onTextSelect}
 					onDoubleClick={props.onDoubleClick}
 					isDarkTheme={props.isDarkTheme} scaledSize={scaledSize} container={props.container} key={i} />;
-			}
-			) : 'Calculating size...'
+			},
+			) : ''
 		}
 	</PagesHolder>);
 }

@@ -2,7 +2,9 @@ import { rtrimSlashes } from '../../path-utils';
 import shim from '../../shim';
 import { CurrentProfileVersion, defaultProfile, defaultProfileConfig, DefaultProfileId, Profile, ProfileConfig } from './types';
 import { customAlphabet } from 'nanoid/non-secure';
+import { _ } from '../../locale';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Old code before rule was applied
 export const migrateProfileConfig = (profileConfig: any, toVersion: number): ProfileConfig => {
 	let version = 2;
 
@@ -96,6 +98,17 @@ export const createNewProfile = (config: ProfileConfig, profileName: string) => 
 	return {
 		newConfig: newConfig,
 		newProfile: newProfile,
+	};
+};
+
+export const deleteProfileById = (config: ProfileConfig, profileId: string): ProfileConfig => {
+	if (profileId === DefaultProfileId) throw new Error(_('The default profile cannot be deleted'));
+	if (profileId === config.currentProfileId) throw new Error(_('The active profile cannot be deleted. Switch to a different profile and try again.'));
+
+	const newProfiles = config.profiles.filter(p => p.id !== profileId);
+	return {
+		...config,
+		profiles: newProfiles,
 	};
 };
 
